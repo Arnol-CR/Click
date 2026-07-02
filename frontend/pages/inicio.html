@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clik — Inicio</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div style="padding: 40px; text-align: center;">
+        <h1>✅ Bienvenido a Clik</h1>
+        <p id="nombre-usuario"></p>
+        <br>
+        <button onclick="cerrarSesion()" style="width: auto; padding: 10px 24px;">
+            Cerrar Sesión
+        </button>
+    </div>
+    <script>
+        // Verificar sesión
+        const usuario = JSON.parse(localStorage.getItem('usuario'))
+        if (!usuario) window.location.href = 'login.html'
+
+        document.getElementById('nombre-usuario').textContent = 
+            `Hola, ${usuario.NombreEmpleado} — ${usuario.NombreRol}`
+
+        function cerrarSesion() {
+            localStorage.removeItem('usuario')
+            window.location.href = 'login.html'
+        }
+    </script>
+</body>
+</html>
