@@ -7,25 +7,46 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <div style="padding: 40px; text-align: center;">
-        <h1>Bienvenido a Clik</h1>
-        <p id="nombre-usuario"></p>
-        <br>
-        <button onclick="cerrarSesion()" style="width: auto; padding: 10px 24px;">
-            Cerrar Sesión
-        </button>
-    </div>
-    <script>
-        const usuario = JSON.parse(localStorage.getItem('usuario'))
-        if (!usuario) window.location.href = '/login'
+<div class="layout">
 
-        document.getElementById('nombre-usuario').textContent = 
-            `Hola, ${usuario.NombreEmpleado} — ${usuario.NombreRol}`
+    <!-- SIDEBAR -->
+    <div id="sidebar-container"></div>
 
-        function cerrarSesion() {
-            localStorage.removeItem('usuario')
-            window.location.href = '/login'
-        }
-    </script>
+    <!-- CONTENIDO -->
+    <main class="content">
+        <div class="content-header">
+            <h1>Inicio</h1>
+            <p id="fecha-hoy"></p>
+        </div>
+
+        <!-- TABLA ULTIMAS VENTAS -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Últimas Ventas</h3>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>N° Factura</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-ventas">
+                    <tr>
+                        <td colspan="5" style="text-align:center; color:#888; padding:30px;">
+                            Cargando...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+</div>
+<script src="/js/sidebar.js"></script>
+<script src="/js/inicio.js"></script>
 </body>
 </html>
