@@ -1,4 +1,4 @@
-const API = 'http://localhost:3000/api'
+const API = 'https://click-erqg.onrender.com/api'
 
 async function login() {
     const usuario    = document.getElementById('usuario').value.trim()
