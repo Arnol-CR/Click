@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clik — Administración</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="layout">
+
+    <div id="sidebar-container"></div>
+
+    <main class="content">
+        <div class="content-header">
+            <h1>Administración</h1>
+            <p>Gestión de usuarios del sistema</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Usuarios</h3>
+                <button class="btn-sm" onclick="abrirModal('modal-usuario')">+ Nuevo Usuario</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Empleado</th>
+                        <th>Usuario</th>
+                        <th>Rol</th>
+                        <th>Último Acceso</th>
+                        <th>Estado</th>
+                        <th>Bloqueado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-usuarios">
+                    <tr><td colspan="8" class="text-center">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<!-- MODAL NUEVO USUARIO -->
+<div id="modal-usuario" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Nuevo Usuario</h3>
+            <span onclick="cerrarModal('modal-usuario')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Empleado</label>
+                <select id="inp-usu-empleado"></select>
+            </div>
+            <div class="form-group">
+                <label>Usuario</label>
+                <input type="text" id="inp-usu-usuario" placeholder="Ej: mlopez"/>
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <div class="input-icon">
+                    <input type="password" id="inp-usu-contrasena" placeholder="Contraseña"/>
+                    <span onclick="togglePass('inp-usu-contrasena', 'ojo-nuevo')" id="ojo-nuevo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#888" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-usuario')">Cancelar</button>
+            <button class="btn-save" onclick="guardarUsuario()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL EDITAR USUARIO -->
+<div id="modal-edit-usuario" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Editar Usuario</h3>
+            <span onclick="cerrarModal('modal-edit-usuario')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="edit-usu-id"/>
+            <div class="form-group">
+                <label>Empleado</label>
+                <input type="text" id="edit-usu-empleado" readonly
+                    style="background:#f8fafc; color:#888;"/>
+            </div>
+            <div class="form-group">
+                <label>Usuario</label>
+                <input type="text" id="edit-usu-usuario"/>
+            </div>
+            <div class="form-group">
+                <label>Estado</label>
+                <div class="toggle-container">
+                    <label class="toggle">
+                        <input type="checkbox" id="edit-usu-activo"/>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-label" id="edit-usu-activo-label">Activo</span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-edit-usuario')">Cancelar</button>
+            <button class="btn-save" onclick="actualizarUsuario()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CAMBIAR CONTRASEÑA -->
+<div id="modal-contrasena" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Cambiar Contraseña</h3>
+            <span onclick="cerrarModal('modal-contrasena')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="pass-usu-id"/>
+            <div class="form-group">
+                <label>Nueva Contraseña</label>
+                <div class="input-icon">
+                    <input type="password" id="pass-usu-nueva" placeholder="Nueva contraseña"/>
+                    <span onclick="togglePass('pass-usu-nueva', 'ojo-nueva')" id="ojo-nueva">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#888" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Confirmar Contraseña</label>
+                <div class="input-icon">
+                    <input type="password" id="pass-usu-confirmar" placeholder="Confirmar contraseña"/>
+                    <span onclick="togglePass('pass-usu-confirmar', 'ojo-confirmar')" id="ojo-confirmar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#888" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-contrasena')">Cancelar</button>
+            <button class="btn-save" onclick="cambiarContrasena()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/sidebar.js"></script>
+<script src="/js/administracion.js"></script>
+</body>
+</html>

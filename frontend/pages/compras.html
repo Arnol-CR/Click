@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clik — Compras</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="layout">
+
+    <div id="sidebar-container"></div>
+
+    <main class="content">
+        <div class="content-header">
+            <h1>Compras</h1>
+            <p>Gestión de facturas de entrada</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Facturas de Entrada</h3>
+                <button class="btn-sm" onclick="abrirNuevaCompra()">+ Nueva Compra</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>N° Factura</th>
+                        <th>Proveedor</th>
+                        <th>Fecha Emisión</th>
+                        <th>Fecha Ingreso</th>
+                        <th>Subtotal</th>
+                        <th>ISV</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-compras">
+                    <tr><td colspan="10" class="text-center">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<!-- MODAL NUEVA COMPRA -->
+<div id="modal-compra" class="modal hidden">
+    <div class="modal-content" style="width:700px; max-width:95%;">
+        <div class="modal-header">
+            <h3>Nueva Compra</h3>
+            <span onclick="cerrarModal('modal-compra')">&times;</span>
+        </div>
+        <div class="modal-body">
+
+            <!-- ENCABEZADO -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="form-group">
+                    <label>Proveedor</label>
+                    <select id="inp-com-proveedor"></select>
+                </div>
+                <div class="form-group">
+                    <label>N° Factura Proveedor</label>
+                    <input type="text" id="inp-com-nfactura" placeholder="Ej: F-001-2026"/>
+                </div>
+                <div class="form-group">
+                    <label>Fecha Emisión</label>
+                    <input type="date" id="inp-com-fecha"/>
+                </div>
+                <div class="form-group">
+                    <label>Estado</label>
+                    <select id="inp-com-estado">
+                        <option value="Recibida">Recibida</option>
+                        <option value="Pendiente">Pendiente</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr style="margin:16px 0; border-color:var(--border);"/>
+
+            <!-- DETALLE -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h4 style="font-size:14px; color:var(--dark);">Detalle de Productos</h4>
+                <button class="btn-sm" onclick="agregarLinea()">+ Agregar</button>
+            </div>
+
+            <table style="font-size:13px;">
+                <thead>
+                    <tr>
+                        <th>Artículo</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unit.</th>
+                        <th>Descuento</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="detalle-compra">
+                </tbody>
+            </table>
+
+            <hr style="margin:16px 0; border-color:var(--border);"/>
+
+            <!-- TOTALES -->
+            <div style="display:flex; justify-content:flex-end;">
+                <div style="width:250px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                        <span style="font-size:13px; color:#888;">Subtotal:</span>
+                        <span style="font-size:13px;" id="res-subtotal">L. 0.00</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                        <span style="font-size:13px; color:#888;">ISV (15%):</span>
+                        <span style="font-size:13px;" id="res-isv">L. 0.00</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; padding-top:8px; border-top:1px solid var(--border);">
+                        <span style="font-size:15px; font-weight:700; color:var(--dark);">Total:</span>
+                        <span style="font-size:15px; font-weight:700; color:var(--primary);" id="res-total">L. 0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-compra')">Cancelar</button>
+            <button class="btn-save" onclick="guardarCompra()">Guardar Compra</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL VER DETALLE -->
+<div id="modal-detalle-compra" class="modal hidden">
+    <div class="modal-content" style="width:700px; max-width:95%;">
+        <div class="modal-header">
+            <h3>Detalle de Compra</h3>
+            <span onclick="cerrarModal('modal-detalle-compra')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div id="info-compra" style="margin-bottom:16px; font-size:13px; color:#555;"></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Artículo</th>
+                        <th>Código</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unit.</th>
+                        <th>Descuento</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-detalle-compra">
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-detalle-compra')">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/sidebar.js"></script>
+<script src="/js/compras.js"></script>
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clik — Productos</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="layout">
+
+    <div id="sidebar-container"></div>
+
+    <main class="content">
+        <div class="content-header">
+            <h1>Articulos</h1>
+            <p>Gestión de categorías, marcas, productos y artículos</p>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab active" onclick="cambiarTab('categorias', event)">Categorías</button>
+            <button class="tab" onclick="cambiarTab('marcas', event)">Marcas</button>
+            <button class="tab" onclick="cambiarTab('productos', event)">Productos</button>
+            <button class="tab" onclick="cambiarTab('articulos', event)">Artículos</button>
+            <button class="tab" onclick="cambiarTab('proveedores', event)">Proveedores</button>
+        </div>
+
+        <!-- CATEGORIAS -->
+        <div id="tab-categorias" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Categorías</h3>
+                    <button class="btn-sm" onclick="abrirModal('modal-categoria')">+ Nueva Categoría</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>#</th><th>Nombre</th></tr>
+                    </thead>
+                    <tbody id="tabla-categorias">
+                        <tr><td colspan="2" class="text-center">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- MARCAS -->
+        <div id="tab-marcas" class="tab-content hidden">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Marcas</h3>
+                    <button class="btn-sm" onclick="abrirModal('modal-marca')">+ Nueva Marca</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>#</th><th>Nombre</th><th>Estado</th></tr>
+                    </thead>
+                    <tbody id="tabla-marcas">
+                        <tr><td colspan="3" class="text-center">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PRODUCTOS -->
+        <div id="tab-productos" class="tab-content hidden">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Productos</h3>
+                    <button class="btn-sm" onclick="abrirModal('modal-producto')">+ Nuevo Producto</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Código</th><th>Nombre</th><th>Categoría</th><th>Estado</th></tr>
+                    </thead>
+                    <tbody id="tabla-productos">
+                        <tr><td colspan="4" class="text-center">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ARTICULOS -->
+        <div id="tab-articulos" class="tab-content hidden">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Artículos</h3>
+                    <button class="btn-sm" onclick="abrirModal('modal-articulo')">+ Nuevo Artículo</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Código</th><th>Producto</th><th>Marca</th><th>Proveedor</th><th>Tamaño</th><th>Estado</th></tr>
+                    </thead>
+                    <tbody id="tabla-articulos">
+                        <tr><td colspan="6" class="text-center">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PROVEEDORES -->
+        <div id="tab-proveedores" class="tab-content hidden">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Proveedores</h3>
+                    <button class="btn-sm" onclick="abrirModal('modal-proveedor')">+ Nuevo Proveedor</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>#</th><th>Empresa</th><th>RTN</th><th>Teléfono</th><th>Correo</th></tr>
+                    </thead>
+                    <tbody id="tabla-proveedores">
+                        <tr><td colspan="5" class="text-center">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- MODAL CATEGORIA -->
+<div id="modal-categoria" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Nueva Categoría</h3>
+            <span onclick="cerrarModal('modal-categoria')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Nombre de Categoría</label>
+                <input type="text" id="inp-categoria" placeholder="Ej: Lubricantes"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-categoria')">Cancelar</button>
+            <button class="btn-save" onclick="guardarCategoria()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL MARCA -->
+<div id="modal-marca" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Nueva Marca</h3>
+            <span onclick="cerrarModal('modal-marca')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Nombre de Marca</label>
+                <input type="text" id="inp-marca" placeholder="Ej: Castrol"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-marca')">Cancelar</button>
+            <button class="btn-save" onclick="guardarMarca()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PRODUCTO -->
+<div id="modal-producto" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Nuevo Producto</h3>
+            <span onclick="cerrarModal('modal-producto')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Categoría</label>
+                <select id="inp-prod-categoria"></select>
+            </div>
+            <div class="form-group">
+                <label>Código</label>
+                <input type="text" id="inp-prod-codigo" placeholder="Se genera automáticamente" readonly/>
+            </div>
+            <div class="form-group">
+                <label>Nombre del Producto</label>
+                <input type="text" id="inp-prod-nombre" placeholder="Ej: Aceite de Motor"/>
+            </div>
+            <div class="form-group">
+                <label>Descripción</label>
+                <input type="text" id="inp-prod-descripcion" placeholder="Opcional"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-producto')">Cancelar</button>
+            <button class="btn-save" onclick="guardarProducto()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL ARTICULO -->
+<div id="modal-articulo" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Nuevo Artículo</h3>
+            <span onclick="cerrarModal('modal-articulo')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Producto</label>
+                <select id="inp-var-producto"></select>
+            </div>
+            <div class="form-group">
+                <label>Marca</label>
+                <select id="inp-var-marca"></select>
+            </div>
+            <div class="form-group">
+                <label>Proveedor</label>
+                <select id="inp-var-proveedor"></select>
+            </div>
+            <div class="form-group">
+                <label>Código Artículo</label>
+                <input type="text" id="inp-var-codigo" placeholder="Se genera automáticamente"/>
+            </div>
+            <div class="form-group">
+                <label>Característica 1</label>
+                <input type="text" id="inp-var-car1" placeholder="Ej: 5W-30"/>
+            </div>
+            <div class="form-group">
+                <label>Característica 2</label>
+                <input type="text" id="inp-var-car2" placeholder="Ej: Sintético"/>
+            </div>
+            <div class="form-group">
+                <label>Tamaño</label>
+                <input type="text" id="inp-var-tamanio" placeholder="Ej: 1 Litro"/>
+            </div>
+            <div class="form-group">
+                <label>Unidad de Medida</label>
+                <input type="text" id="inp-var-unidad" placeholder="Ej: Litro"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-articulo')">Cancelar</button>
+            <button class="btn-save" onclick="guardarVariante()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PROVEEDOR -->
+<div id="modal-proveedor" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Nuevo Proveedor</h3>
+            <span onclick="cerrarModal('modal-proveedor')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Nombre de Empresa</label>
+                <input type="text" id="inp-prov-nombre" placeholder="Ej: Distribuidora XYZ"/>
+            </div>
+            <div class="form-group">
+                <label>RTN</label>
+                <input type="text" id="inp-prov-rtn" placeholder="Ej: 05019999123456"/>
+            </div>
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" id="inp-prov-telefono" placeholder="Ej: 2222-3333"/>
+            </div>
+            <div class="form-group">
+                <label>Correo</label>
+                <input type="text" id="inp-prov-correo" placeholder="Ej: ventas@xyz.com"/>
+            </div>
+            <div class="form-group">
+                <label>Dirección</label>
+                <input type="text" id="inp-prov-direccion" placeholder="Ej: Tegucigalpa, Honduras"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-proveedor')">Cancelar</button>
+            <button class="btn-save" onclick="guardarProveedor()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL EDITAR CATEGORIA -->
+<div id="modal-edit-categoria" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Editar Categoría</h3>
+            <span onclick="cerrarModal('modal-edit-categoria')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="edit-cat-id"/>
+            <div class="form-group">
+                <label>Nombre de Categoría</label>
+                <input type="text" id="edit-cat-nombre"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-edit-categoria')">Cancelar</button>
+            <button class="btn-save" onclick="actualizarCategoria()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL EDITAR MARCA -->
+<div id="modal-edit-marca" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Editar Marca</h3>
+            <span onclick="cerrarModal('modal-edit-marca')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="edit-mar-id"/>
+            <div class="form-group">
+                <label>Nombre de Marca</label>
+                <input type="text" id="edit-mar-nombre"/>
+            </div>
+            <div class="form-group">
+    <label>Estado</label>
+    <div class="toggle-container">
+        <label class="toggle">
+            <input type="checkbox" id="edit-mar-activo"/>
+            <span class="toggle-slider"></span>
+        </label>
+        <span class="toggle-label" id="edit-mar-activo-label">Activo</span>
+    </div>
+</div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-edit-marca')">Cancelar</button>
+            <button class="btn-save" onclick="actualizarMarca()">Guardar</button>
+        </div>
+        
+    </div>
+    
+</div>
+
+<!-- MODAL EDITAR PRODUCTO -->
+<div id="modal-edit-producto" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Editar Producto</h3>
+            <span onclick="cerrarModal('modal-edit-producto')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="edit-prod-id"/>
+            <div class="form-group">
+                <label>Categoría</label>
+                <select id="edit-prod-categoria"></select>
+            </div>
+            <div class="form-group">
+                <label>Nombre del Producto</label>
+                <input type="text" id="edit-prod-nombre"/>
+            </div>
+            <div class="form-group">
+                <label>Descripción</label>
+                <input type="text" id="edit-prod-descripcion"/>
+            </div>
+            <div class="form-group">
+    <label>Estado</label>
+    <div class="toggle-container">
+        <label class="toggle">
+            <input type="checkbox" id="edit-prod-activo"/>
+            <span class="toggle-slider"></span>
+        </label>
+        <span class="toggle-label" id="edit-prod-activo-label">Activo</span>
+    </div>
+</div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-edit-producto')">Cancelar</button>
+            <button class="btn-save" onclick="actualizarProducto()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL EDITAR ARTICULO -->
+<div id="modal-edit-articulo" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Editar Artículo</h3>
+            <span onclick="cerrarModal('modal-edit-articulo')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="edit-art-id"/>
+            <div class="form-group">
+                <label>Producto</label>
+                <select id="edit-art-producto"></select>
+            </div>
+            <div class="form-group">
+                <label>Marca</label>
+                <select id="edit-art-marca"></select>
+            </div>
+            <div class="form-group">
+                <label>Proveedor</label>
+                <select id="edit-art-proveedor"></select>
+            </div>
+            <div class="form-group">
+                <label>Característica 1</label>
+                <input type="text" id="edit-art-car1"/>
+            </div>
+            <div class="form-group">
+                <label>Característica 2</label>
+                <input type="text" id="edit-art-car2"/>
+            </div>
+            <div class="form-group">
+                <label>Tamaño</label>
+                <input type="text" id="edit-art-tamanio"/>
+            </div>
+            <div class="form-group">
+                <label>Unidad de Medida</label>
+                <input type="text" id="edit-art-unidad"/>
+            </div>
+           <div class="form-group">
+    <label>Estado</label>
+    <div class="toggle-container">
+        <label class="toggle">
+            <input type="checkbox" id="edit-art-activo"/>
+            <span class="toggle-slider"></span>
+        </label>
+        <span class="toggle-label" id="edit-art-activo-label">Activo</span>
+    </div>
+</div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-edit-articulo')">Cancelar</button>
+            <button class="btn-save" onclick="actualizarArticulo()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL EDITAR PROVEEDOR -->
+<div id="modal-edit-proveedor" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Editar Proveedor</h3>
+            <span onclick="cerrarModal('modal-edit-proveedor')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="edit-prov-id"/>
+            <div class="form-group">
+                <label>Nombre de Empresa</label>
+                <input type="text" id="edit-prov-nombre"/>
+            </div>
+            <div class="form-group">
+                <label>RTN</label>
+                <input type="text" id="edit-prov-rtn"/>
+            </div>
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" id="edit-prov-telefono"/>
+            </div>
+            <div class="form-group">
+                <label>Correo</label>
+                <input type="text" id="edit-prov-correo"/>
+            </div>
+            <div class="form-group">
+                <label>Dirección</label>
+                <input type="text" id="edit-prov-direccion"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-edit-proveedor')">Cancelar</button>
+            <button class="btn-save" onclick="actualizarProveedor()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="/js/sidebar.js"></script>
+<script src="/js/productos.js"></script>
+
+
+</body>
+</html>

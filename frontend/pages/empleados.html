@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clik — Empleados</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="layout">
+
+    <div id="sidebar-container"></div>
+
+    <main class="content">
+        <div class="content-header">
+            <h1>Empleados</h1>
+            <p>Gestión de empleados</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Lista de Empleados</h3>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="text" id="buscador-empleado"
+                        placeholder="Buscar por nombre o identidad..."
+                        oninput="filtrarEmpleados()"
+                        style="padding:8px 12px; border:1px solid var(--border); border-radius:8px; font-size:13px; width:280px; outline:none;"/>
+                    <button class="btn-sm" onclick="abrirModal('modal-empleado')">+ Nuevo Empleado</button>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Identidad</th>
+                        <th>Rol</th>
+                        <th>Cargo</th>
+                        <th>Salario</th>
+                        <th>Teléfono</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-empleados">
+                    <tr><td colspan="9" class="text-center">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<!-- MODAL NUEVO EMPLEADO -->
+<div id="modal-empleado" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Nuevo Empleado</h3>
+            <span onclick="cerrarModal('modal-empleado')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Rol</label>
+                <select id="inp-emp-rol"></select>
+            </div>
+            <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" id="inp-emp-nombre" placeholder="Ej: María López"/>
+            </div>
+            <div class="form-group">
+                <label>Identidad</label>
+                <input type="text" id="inp-emp-identidad" placeholder="Ej: 0801199900000"/>
+            </div>
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" id="inp-emp-telefono" placeholder="Ej: 9999-8888"/>
+            </div>
+            <div class="form-group">
+                <label>Correo</label>
+                <input type="text" id="inp-emp-correo" placeholder="Ej: correo@gmail.com"/>
+            </div>
+            <div class="form-group">
+                <label>Dirección</label>
+                <input type="text" id="inp-emp-direccion" placeholder="Ej: Tegucigalpa, Honduras"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-empleado')">Cancelar</button>
+            <button class="btn-save" onclick="guardarEmpleado()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL EDITAR EMPLEADO -->
+<div id="modal-edit-empleado" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Editar Empleado</h3>
+            <span onclick="cerrarModal('modal-edit-empleado')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="edit-emp-id"/>
+            <div class="form-group">
+                <label>Rol</label>
+                <select id="edit-emp-rol"></select>
+            </div>
+            <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" id="edit-emp-nombre"/>
+            </div>
+            <div class="form-group">
+                <label>Identidad</label>
+                <input type="text" id="edit-emp-identidad"/>
+            </div>
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" id="edit-emp-telefono"/>
+            </div>
+            <div class="form-group">
+                <label>Correo</label>
+                <input type="text" id="edit-emp-correo"/>
+            </div>
+            <div class="form-group">
+                <label>Dirección</label>
+                <input type="text" id="edit-emp-direccion"/>
+            </div>
+            <div class="form-group">
+                <label>Estado</label>
+                <div class="toggle-container">
+                    <label class="toggle">
+                        <input type="checkbox" id="edit-emp-activo"/>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-label" id="edit-emp-activo-label">Activo</span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-edit-empleado')">Cancelar</button>
+            <button class="btn-save" onclick="actualizarEmpleado()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/sidebar.js"></script>
+<script src="/js/empleados.js"></script>
+</body>
+</html>

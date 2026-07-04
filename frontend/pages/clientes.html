@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clik — Clientes</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="layout">
+
+    <div id="sidebar-container"></div>
+
+    
+    <main class="content">
+        <div class="content-header">
+            <h1>Clientes</h1>
+            <p>Gestión de clientes</p>
+        </div>
+
+        
+        <div class="card">
+            
+           <div class="card">
+    <div class="card-header">
+        <h3>Lista de Clientes</h3>
+        <div style="display:flex; gap:10px; align-items:center;">
+            <input type="text" id="buscador-cliente" 
+                placeholder="Buscar por nombre o identidad..." 
+                oninput="filtrarClientes()"
+                style="padding:8px 12px; border:1px solid var(--border); border-radius:8px; font-size:13px; width:280px; outline:none;"/>
+            <button class="btn-sm" onclick="abrirModal('modal-cliente')">+ Nuevo Cliente</button>
+        </div>
+    </div>
+    <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre / Razón Social</th>
+                        <th>RTN</th>
+                        <th>Identidad</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>
+                        <th>Límite Crédito</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-clientes">
+                    <tr><td colspan="9" class="text-center">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<!-- MODAL NUEVO CLIENTE -->
+<div id="modal-cliente" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Nuevo Cliente</h3>
+            <span onclick="cerrarModal('modal-cliente')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Nombre / Razón Social</label>
+                <input type="text" id="inp-cli-nombre" placeholder="Ej: Juan Pérez"/>
+            </div>
+            <div class="form-group">
+                <label>RTN</label>
+                <input type="text" id="inp-cli-rtn" placeholder="Ej: 05019999123456"/>
+            </div>
+            <div class="form-group">
+                <label>Identidad</label>
+                <input type="text" id="inp-cli-identidad" placeholder="Ej: 0801199900000"/>
+            </div>
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" id="inp-cli-telefono" placeholder="Ej: 9999-8888"/>
+            </div>
+            <div class="form-group">
+                <label>Correo</label>
+                <input type="text" id="inp-cli-correo" placeholder="Ej: correo@gmail.com"/>
+            </div>
+            <div class="form-group">
+                <label>Dirección</label>
+                <input type="text" id="inp-cli-direccion" placeholder="Ej: Tegucigalpa, Honduras"/>
+            </div>
+            <div class="form-group">
+                <label>Límite de Crédito</label>
+                <input type="number" id="inp-cli-credito" placeholder="0.00" value="0"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-cliente')">Cancelar</button>
+            <button class="btn-save" onclick="guardarCliente()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL EDITAR CLIENTE -->
+<div id="modal-edit-cliente" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Editar Cliente</h3>
+            <span onclick="cerrarModal('modal-edit-cliente')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="edit-cli-id"/>
+            <div class="form-group">
+                <label>Nombre / Razón Social</label>
+                <input type="text" id="edit-cli-nombre"/>
+            </div>
+            <div class="form-group">
+                <label>RTN</label>
+                <input type="text" id="edit-cli-rtn"/>
+            </div>
+            <div class="form-group">
+                <label>Identidad</label>
+                <input type="text" id="edit-cli-identidad"/>
+            </div>
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" id="edit-cli-telefono"/>
+            </div>
+            <div class="form-group">
+                <label>Correo</label>
+                <input type="text" id="edit-cli-correo"/>
+            </div>
+            <div class="form-group">
+                <label>Dirección</label>
+                <input type="text" id="edit-cli-direccion"/>
+            </div>
+            <div class="form-group">
+                <label>Límite de Crédito</label>
+                <input type="number" id="edit-cli-credito"/>
+            </div>
+            <div class="form-group">
+                <label>Estado</label>
+                <div class="toggle-container">
+                    <label class="toggle">
+                        <input type="checkbox" id="edit-cli-activo"/>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-label" id="edit-cli-activo-label">Activo</span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-edit-cliente')">Cancelar</button>
+            <button class="btn-save" onclick="actualizarCliente()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/sidebar.js"></script>
+<script src="/js/clientes.js"></script>
+</body>
+</html>
