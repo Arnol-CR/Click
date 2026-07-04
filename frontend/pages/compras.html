@@ -47,7 +47,7 @@
 
 <!-- MODAL NUEVA COMPRA -->
 <div id="modal-compra" class="modal hidden">
-    <div class="modal-content" style="width:700px; max-width:95%;">
+    <div class="modal-content" style="width:900px; max-width:95%;">
         <div class="modal-header">
             <h3>Nueva Compra</h3>
             <span onclick="cerrarModal('modal-compra')">&times;</span>
@@ -153,6 +153,41 @@
         </div>
         <div class="modal-footer">
             <button class="btn-cancel" onclick="cerrarModal('modal-detalle-compra')">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL BUSCADOR DE ARTICULOS -->
+<div id="modal-buscar-articulo" class="modal hidden">
+    <div class="modal-content" style="width:800px; max-width:95%;">
+        <div class="modal-header">
+            <h3>Buscar Artículo</h3>
+            <span onclick="cerrarModal('modal-buscar-articulo')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <input type="text" id="inp-buscar-articulo"
+                    placeholder="Buscar por nombre, marca, código, característica..."
+                    oninput="buscarArticulos()"
+                    style="width:100%; padding:10px 14px; border:1px solid var(--border); border-radius:8px; font-size:14px; outline:none;"/>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Producto</th>
+                        <th>Marca</th>
+                        <th>Tamaño</th>
+                        <th>Característica</th>
+                    </tr>
+                </thead>
+                <tbody id="resultados-articulos">
+                    <tr><td colspan="5" class="text-center">Escriba para buscar...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="cerrarModal('modal-buscar-articulo')">Cancelar</button>
         </div>
     </div>
 </div>

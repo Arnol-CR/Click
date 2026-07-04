@@ -62,27 +62,87 @@ async function abrirNuevaCompra() {
     document.getElementById('modal-compra').classList.remove('hidden')
 }
 
-// == AGREGAR LINEA ==
+// == BUSCADOR DE ARTICULOS ==
+let lineaActual = null
+
 function agregarLinea() {
     const idx = lineas.length
-    lineas.push({ IdProductoMarca: '', Cantidad: 1, PrecioUnitario: 0, Descuento: 0 })
+    lineas.push({ IdProductoMarca: '', NombreArticulo: '', Cantidad: 1, PrecioUnitario: 0, Descuento: 0 })
 
     const tr = document.createElement('tr')
     tr.id    = `linea-${idx}`
     tr.innerHTML = `
         <td>
-            <select onchange="actualizarLinea(${idx}, 'IdProductoMarca', this.value)" style="width:100%; padding:6px; border:1px solid var(--border); border-radius:6px; font-size:12px;">
-                <option value="">Seleccionar...</option>
-                ${articulos.filter(a => a.Activo).map(a => `<option value="${a.IdProductoMarca}">${a.NombreProducto} - ${a.NombreMarca} ${a.Tamanio ? '(' + a.Tamanio + ')' : ''}</option>`).join('')}
-            </select>
+            <div style="display:flex; gap:6px; align-items:center;">
+                <input type="text" id="art-nombre-${idx}" placeholder="Buscar artículo..." readonly
+                    style="width:200px; padding:6px; border:1px solid var(--border); border-radius:6px; font-size:12px; background:#f8fafc; cursor:pointer;"
+                    onclick="abrirBuscadorArticulo(${idx})"/>
+                <button onclick="abrirBuscadorArticulo(${idx})" 
+                    style="background:var(--primary); color:white; border:none; border-radius:6px; padding:6px 10px; cursor:pointer; font-size:12px;">
+                    🔍
+                </button>
+            </div>
         </td>
         <td><input type="number" value="1" min="1" onchange="actualizarLinea(${idx}, 'Cantidad', this.value)" style="width:70px; padding:6px; border:1px solid var(--border); border-radius:6px; font-size:12px;"/></td>
-        <td><input type="number" value="0" min="0" step="0.01" onchange="actualizarLinea(${idx}, 'PrecioUnitario', this.value)" style="width:90px; padding:6px; border:1px solid var(--border); border-radius:6px; font-size:12px;"/></td>
+        <td><input type="number" value="0" min="0" step="0.01" id="precio-${idx}" onchange="actualizarLinea(${idx}, 'PrecioUnitario', this.value)" style="width:90px; padding:6px; border:1px solid var(--border); border-radius:6px; font-size:12px;"/></td>
         <td><input type="number" value="0" min="0" step="0.01" onchange="actualizarLinea(${idx}, 'Descuento', this.value)" style="width:80px; padding:6px; border:1px solid var(--border); border-radius:6px; font-size:12px;"/></td>
-        <td id="subtotal-${idx}" style="font-size:13px;">L. 0.00</td>
-        <td><button onclick="eliminarLinea(${idx})" style="background:#e53e3e; color:white; border:none; border-radius:6px; padding:4px 8px; cursor:pointer; font-size:12px;">X</button></td>
+        <td id="subtotal-${idx}" style="font-size:13px; font-weight:600;">L. 0.00</td>
+        <td><button onclick="eliminarLinea(${idx})" style="background:#e53e3e; color:white; border:none; border-radius:6px; padding:4px 8px; cursor:pointer; font-size:12px;">✕</button></td>
     `
     document.getElementById('detalle-compra').appendChild(tr)
+}
+
+function abrirBuscadorArticulo(idx) {
+    lineaActual = idx
+    document.getElementById('inp-buscar-articulo').value = ''
+    document.getElementById('resultados-articulos').innerHTML = ''
+    document.getElementById('modal-buscar-articulo').classList.remove('hidden')
+    document.getElementById('inp-buscar-articulo').focus()
+    buscarArticulos()
+}
+
+function buscarArticulos() {
+    const texto = document.getElementById('inp-buscar-articulo').value.toLowerCase().trim()
+
+    const filtrados = articulos.filter(a =>
+        a.Activo && (
+            a.NombreProducto.toLowerCase().includes(texto) ||
+            a.NombreMarca.toLowerCase().includes(texto)    ||
+            a.CodigoVariante.toLowerCase().includes(texto) ||
+            (a.Caracteristica1 && a.Caracteristica1.toLowerCase().includes(texto)) ||
+            (a.Tamanio && a.Tamanio.toLowerCase().includes(texto))
+        )
+    )
+
+    const tbody = document.getElementById('resultados-articulos')
+
+    if (!filtrados.length) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center">Sin resultados</td></tr>`
+        return
+    }
+
+    tbody.innerHTML = filtrados.map(a => `
+        <tr style="cursor:pointer;" onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background=''" onclick="seleccionarArticulo(${a.IdProductoMarca}, '${a.NombreProducto} - ${a.NombreMarca} ${a.Tamanio ? '(' + a.Tamanio + ')' : ''}', ${a.PrecioVenta || 0})">
+            <td>${a.CodigoVariante}</td>
+            <td>${a.NombreProducto}</td>
+            <td>${a.NombreMarca}</td>
+            <td>${a.Tamanio || '-'}</td>
+            <td>${a.Caracteristica1 || '-'}</td>
+        </tr>
+    `).join('')
+}
+
+function seleccionarArticulo(id, nombre, precio) {
+    const idx = lineaActual
+    lineas[idx].IdProductoMarca = id
+    lineas[idx].NombreArticulo  = nombre
+    lineas[idx].PrecioUnitario  = precio
+
+    document.getElementById(`art-nombre-${idx}`).value = nombre
+    document.getElementById(`precio-${idx}`).value     = precio
+
+    actualizarLinea(idx, 'PrecioUnitario', precio)
+    document.getElementById('modal-buscar-articulo').classList.add('hidden')
 }
 
 function actualizarLinea(idx, campo, valor) {
