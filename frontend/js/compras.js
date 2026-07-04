@@ -73,15 +73,17 @@ function agregarLinea() {
     tr.id    = `linea-${idx}`
     tr.innerHTML = `
         <td>
-            <div style="display:flex; gap:6px; align-items:center;">
-                <input type="text" id="art-nombre-${idx}" placeholder="Buscar artículo..." readonly
-                    style="width:200px; padding:6px; border:1px solid var(--border); border-radius:6px; font-size:12px; background:#f8fafc; cursor:pointer;"
-                    onclick="abrirBuscadorArticulo(${idx})"/>
-                <button onclick="abrirBuscadorArticulo(${idx})" 
-                    style="background:var(--primary); color:white; border:none; border-radius:6px; padding:6px 10px; cursor:pointer; font-size:12px;">
-                    🔍
-                </button>
-            </div>
+           <div style="display:flex; gap:6px; align-items:center; width:100%;">
+    <input type="text" id="art-nombre-${idx}" placeholder="Buscar artículo..." readonly
+        style="flex:1; padding:6px; border:1px solid var(--border); border-radius:6px; font-size:12px; background:#f8fafc; cursor:pointer;"
+        onclick="abrirBuscadorArticulo(${idx})"/>
+    <button onclick="abrirBuscadorArticulo(${idx})" 
+        style="background:var(--primary); color:white; border:none; border-radius:6px; width:32px; height:32px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+        </svg>
+    </button>
+</div>
         </td>
         <td><input type="number" value="1" min="1" onchange="actualizarLinea(${idx}, 'Cantidad', this.value)" style="width:70px; padding:6px; border:1px solid var(--border); border-radius:6px; font-size:12px;"/></td>
         <td><input type="number" value="0" min="0" step="0.01" id="precio-${idx}" onchange="actualizarLinea(${idx}, 'PrecioUnitario', this.value)" style="width:90px; padding:6px; border:1px solid var(--border); border-radius:6px; font-size:12px;"/></td>
