@@ -10,6 +10,8 @@ const ventasRoutes      = require('./routes/ventas.routes')
 const proveedoresRoutes = require('./routes/proveedores.routes')
 const usuariosRoutes = require('./routes/usuarios.routes')
 const comprasRoutes = require('./routes/compras.routes')
+const inventarioRoutes = require('./routes/inventario.routes')
+
 
 const app = express()
 
@@ -27,6 +29,8 @@ app.use('/api/ventas',      ventasRoutes)
 app.use('/api/proveedores', proveedoresRoutes)
 app.use('/api/usuarios', usuariosRoutes)
 app.use('/api/compras', comprasRoutes)
+app.use('/api/inventario', inventarioRoutes)
+
 
 // Rutas HTML
 app.get('/', (req, res) => {
@@ -64,6 +68,13 @@ app.get('/compras', (req, res) => {
     res.sendFile(path.join(__dirname, '../../frontend/pages/compras.html'))
 })
 
+app.get('/inventario', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../frontend/pages/inventario.html'))
+})
+
+app.get('/ventas', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../frontend/pages/ventas.html'))
+})
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {

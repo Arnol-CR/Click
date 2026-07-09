@@ -373,8 +373,8 @@ tbody tr:hover {
 }
 
 .badge-warning {
-    background: #fffbeb;
-    color: #d97706;
+    background: #fef3c7;
+    color: #92400e;
 }
 
 .badge-danger {
@@ -610,6 +610,128 @@ tbody tr:hover {
     color: var(--text);
 }
 
+/* ================================
+   FILTROS COMPRAS
+================================ */
+.filtros-bar {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.filtros-busqueda {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 220px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 9px 16px;
+    color: var(--text-light);
+    transition: border 0.2s, background 0.2s;
+}
+
+.filtros-busqueda:focus-within {
+    border-color: var(--primary);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(37,162,183,0.12);
+}
+
+.filtros-busqueda svg {
+    flex-shrink: 0;
+}
+
+.filtros-busqueda input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    width: 100%;
+    color: var(--text);
+}
+
+.filtros-fecha {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 6px 12px;
+}
+
+.filtros-fecha input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 13px;
+    color: var(--text);
+    width: 122px;
+}
+
+.filtros-fecha-sep {
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+.filtros-factura {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    border-radius: 24px;
+    padding: 9px 16px;
+    font-size: 14px;
+    outline: none;
+    width: 140px;
+    transition: border 0.2s, background 0.2s;
+}
+
+.filtros-factura:focus {
+    border-color: var(--primary);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(37,162,183,0.12);
+}
+
+.filtros-chips {
+    display: flex;
+    gap: 6px;
+}
+
+.chip {
+    width: auto;
+    margin: 0;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.chip:hover {
+    background: var(--bg);
+    color: var(--dark);
+}
+
+.chip.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.money {
+    white-space: nowrap;
+}
 
 /* TRANSICION DE PAGINA */
 .content {
@@ -625,4 +747,52 @@ tbody tr:hover {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+
+@media print {
+    .sidebar, 
+    .modal-header span,
+    .modal-footer,
+    .btn-edit,
+    .btn-save,
+    .btn-cancel { 
+        display: none !important; 
+    }
+    .modal { 
+        position: static !important; 
+        background: none !important; 
+    }
+    .modal-content { 
+        box-shadow: none !important; 
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    .layout { 
+        display: block !important; 
+    }
+    .content { 
+        padding: 0 !important; 
+    }
+}
+
+/* CHIPS */
+.chip {
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: auto;
+}
+
+.chip:hover { background: var(--bg); }
+
+.chip.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
 }

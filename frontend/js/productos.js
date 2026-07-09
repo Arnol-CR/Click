@@ -225,15 +225,15 @@ async function cargarProductos() {
         return
     }
 
-    tbody.innerHTML = datos.map(p => `
-        <tr>
-            <td>${p.Codigo}</td>
-            <td>${p.NombreProducto}</td>
-            <td>${p.NombreCategoria}</td>
-            <td><span class="badge ${p.Activo ? 'badge-success' : 'badge-danger'}">${p.Activo ? 'Activo' : 'Inactivo'}</span></td>
-            <td><button class="btn-edit" onclick="editarProducto(${p.IdProducto}, ${p.IdCategoria}, '${p.NombreProducto}', '${p.Descripcion || ''}', ${p.Activo ? 1 : 0})">Editar</button></td>
-        </tr>
-    `).join('')
+tbody.innerHTML = datos.map(p => `
+    <tr>
+        <td>${p.Codigo}</td>
+        <td>${p.NombreProducto}</td>
+        <td>${p.NombreCategoria}</td>
+         <td><span class="badge ${p.Activo ? 'badge-success' : 'badge-danger'}">${p.Activo ? 'Activo' : 'Inactivo'}</span></td>
+        <td><button class="btn-edit" onclick="editarProducto(${p.IdProducto}, ${p.IdCategoria}, '${p.NombreProducto}', '${p.Descripcion || ''}', ${p.Activo ? 1 : 0})">Editar</button></td>
+    </tr>
+`).join('')
 }
 
 async function cargarSelectProductos() {
@@ -249,7 +249,7 @@ async function guardarProducto() {
         IdCategoria:    document.getElementById('inp-prod-categoria').value,
         Codigo:         document.getElementById('inp-prod-codigo').value.trim(),
         NombreProducto: document.getElementById('inp-prod-nombre').value.trim(),
-        Descripcion:    document.getElementById('inp-prod-descripcion').value.trim()
+        Descripcion:    document.getElementById('inp-prod-descripcion').value.trim(),
     }
 
     if (!body.Codigo || !body.NombreProducto) return alert('Código y nombre son requeridos')
@@ -272,7 +272,7 @@ async function editarProducto(id, idCategoria, nombre, descripcion, activo) {
     document.getElementById('edit-prod-descripcion').value = descripcion || ''
     document.getElementById('edit-prod-activo').checked    = activo == 1
     document.getElementById('edit-prod-activo-label').textContent = activo == 1 ? 'Activo' : 'Inactivo'
-    document.getElementById('modal-edit-producto').classList.remove('hidden')
+
     document.getElementById('edit-prod-activo').onchange = function() {
         document.getElementById('edit-prod-activo-label').textContent = this.checked ? 'Activo' : 'Inactivo'
     }
@@ -281,7 +281,10 @@ async function editarProducto(id, idCategoria, nombre, descripcion, activo) {
     const datos = await res.json()
     document.getElementById('edit-prod-categoria').innerHTML =
         datos.map(c => `<option value="${c.IdCategoria}" ${c.IdCategoria == idCategoria ? 'selected' : ''}>${c.NombreCategoria}</option>`).join('')
+
+    document.getElementById('modal-edit-producto').classList.remove('hidden')
 }
+
 
 async function actualizarProducto() {
     const id   = document.getElementById('edit-prod-id').value
@@ -323,8 +326,8 @@ async function cargarArticulos() {
             <td>${v.Proveedor}</td>
             <td>${v.Tamanio || '-'}</td>
             <td><span class="badge ${v.Activo ? 'badge-success' : 'badge-danger'}">${v.Activo ? 'Activo' : 'Inactivo'}</span></td>
-            <td><button class="btn-edit" onclick="editarArticulo(${v.IdProductoMarca}, ${v.IdProducto}, ${v.IdMarca}, ${v.IdProveedor}, '${v.Caracteristica1 || ''}', '${v.Caracteristica2 || ''}', '${v.Tamanio || ''}', '${v.UnidadMedida || ''}', ${v.Activo ? 1 : 0})">Editar</button></td>
-        </tr>
+           <td><button class="btn-edit" onclick="editarArticulo(${v.IdProductoMarca}, ${v.IdProducto}, ${v.IdMarca}, ${v.IdProveedor}, '${v.Caracteristica1 || ''}', '${v.Caracteristica2 || ''}', '${v.Tamanio || ''}', '${v.UnidadMedida || ''}', ${v.Activo ? 1 : 0}, '${v.CodigoBarras || ''}')">Editar</button></td>
+            </tr>
     `).join('')
 }
 
@@ -344,7 +347,8 @@ async function guardarVariante() {
         Caracteristica1: document.getElementById('inp-var-car1').value.trim(),
         Caracteristica2: document.getElementById('inp-var-car2').value.trim(),
         Tamanio:         document.getElementById('inp-var-tamanio').value.trim(),
-        UnidadMedida:    document.getElementById('inp-var-unidad').value.trim()
+        UnidadMedida:    document.getElementById('inp-var-unidad').value.trim(),
+        CodigoBarras:    document.getElementById('inp-var-codigobarras').value.trim()
     }
 
     if (!body.CodigoVariante) return alert('El código del artículo es requerido')
@@ -360,16 +364,17 @@ async function guardarVariante() {
     cerrarModal('modal-articulo')
     cargarArticulos()
 }
-
-async function editarArticulo(id, idProducto, idMarca, idProveedor, car1, car2, tamanio, unidad, activo) {
-    document.getElementById('edit-art-id').value       = id
-    document.getElementById('edit-art-car1').value     = car1    || ''
-    document.getElementById('edit-art-car2').value     = car2    || ''
-    document.getElementById('edit-art-tamanio').value  = tamanio || ''
-    document.getElementById('edit-art-unidad').value   = unidad  || ''
-    document.getElementById('edit-art-activo').checked = activo == 1
+async function editarArticulo(id, idProducto, idMarca, idProveedor, car1, car2, tamanio, unidad, activo, codigoBarras) {
+    document.getElementById('edit-art-id').value           = id
+    document.getElementById('edit-art-car1').value         = car1         || ''
+    document.getElementById('edit-art-car2').value         = car2         || ''
+    document.getElementById('edit-art-tamanio').value      = tamanio      || ''
+    document.getElementById('edit-art-unidad').value       = unidad       || ''
+    document.getElementById('edit-art-codigobarras').value = codigoBarras || ''
+    document.getElementById('edit-art-activo').checked     = activo == 1
     document.getElementById('edit-art-activo-label').textContent = activo == 1 ? 'Activo' : 'Inactivo'
     document.getElementById('modal-edit-articulo').classList.remove('hidden')
+
     document.getElementById('edit-art-activo').onchange = function() {
         document.getElementById('edit-art-activo-label').textContent = this.checked ? 'Activo' : 'Inactivo'
     }
@@ -392,7 +397,6 @@ async function editarArticulo(id, idProducto, idMarca, idProveedor, car1, car2, 
     document.getElementById('edit-art-proveedor').innerHTML =
         provs.map(p => `<option value="${p.IdProveedor}" ${p.IdProveedor == idProveedor ? 'selected' : ''}>${p.NombreEmpresa}</option>`).join('')
 }
-
 async function actualizarArticulo() {
     const id   = document.getElementById('edit-art-id').value
     const body = {
@@ -403,7 +407,8 @@ async function actualizarArticulo() {
         Caracteristica2: document.getElementById('edit-art-car2').value.trim(),
         Tamanio:         document.getElementById('edit-art-tamanio').value.trim(),
         UnidadMedida:    document.getElementById('edit-art-unidad').value.trim(),
-        Activo:          document.getElementById('edit-art-activo').checked ? 1 : 0
+        Activo:          document.getElementById('edit-art-activo').checked ? 1 : 0,
+        CodigoBarras:    document.getElementById('edit-art-codigobarras').value.trim()
     }
 
     const res  = await fetch(`${API}/productos/variantes/${id}`, {
@@ -413,6 +418,7 @@ async function actualizarArticulo() {
     })
     const data = await res.json()
     if (!res.ok) return alert(data.error)
+
     cerrarModal('modal-edit-articulo')
     cargarArticulos()
 }

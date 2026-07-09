@@ -100,7 +100,8 @@ router.get('/variantes', async (req, res) => {
         const pool   = await poolPromise
         const result = await pool.request()
             .query(`
-                SELECT PM.*, P.NombreProducto, M.NombreMarca, PR.NombreEmpresa AS Proveedor
+                SELECT PM.*, P.NombreProducto,
+                       M.NombreMarca, PR.NombreEmpresa AS Proveedor
                 FROM ProductoMarca PM
                 INNER JOIN Productos   P  ON P.IdProducto   = PM.IdProducto
                 INNER JOIN Marcas      M  ON M.IdMarca      = PM.IdMarca
@@ -112,10 +113,9 @@ router.get('/variantes', async (req, res) => {
         res.status(500).json({ error: err.message })
     }
 })
-
 router.post('/variantes', async (req, res) => {
     const { IdProducto, IdMarca, IdProveedor, CodigoVariante,
-            Caracteristica1, Caracteristica2, Tamanio, UnidadMedida } = req.body
+            Caracteristica1, Caracteristica2, Tamanio, UnidadMedida, CodigoBarras } = req.body
     try {
         const pool   = await poolPromise
         const result = await pool.request()
@@ -127,6 +127,7 @@ router.post('/variantes', async (req, res) => {
             .input('Caracteristica2', sql.VarChar(100), Caracteristica2)
             .input('Tamanio',         sql.VarChar(30),  Tamanio)
             .input('UnidadMedida',    sql.VarChar(20),  UnidadMedida)
+            .input('CodigoBarras',    sql.VarChar(30),  CodigoBarras || null)
             .execute('sp_InsertarProductoMarca')
         res.json({ ok: true, datos: result.recordset[0] })
     } catch (err) {
@@ -134,10 +135,12 @@ router.post('/variantes', async (req, res) => {
     }
 })
 
+
 router.put('/variantes/:id', async (req, res) => {
     const { id } = req.params
     const { IdProducto, IdMarca, IdProveedor,
-            Caracteristica1, Caracteristica2, Tamanio, UnidadMedida, Activo } = req.body
+            Caracteristica1, Caracteristica2, Tamanio, 
+            UnidadMedida, Activo, CodigoBarras } = req.body
     try {
         const pool = await poolPromise
         await pool.request()
@@ -150,6 +153,7 @@ router.put('/variantes/:id', async (req, res) => {
             .input('Tamanio',         sql.VarChar(30),  Tamanio)
             .input('UnidadMedida',    sql.VarChar(20),  UnidadMedida)
             .input('Activo',          sql.Bit,          Activo == '1' ? 1 : 0)
+            .input('CodigoBarras',    sql.VarChar(30),  CodigoBarras || null)
             .query(`UPDATE ProductoMarca 
                     SET IdProducto      = @IdProducto,
                         IdMarca         = @IdMarca,
@@ -158,7 +162,8 @@ router.put('/variantes/:id', async (req, res) => {
                         Caracteristica2 = @Caracteristica2,
                         Tamanio         = @Tamanio,
                         UnidadMedida    = @UnidadMedida,
-                        Activo          = @Activo
+                        Activo          = @Activo,
+                        CodigoBarras    = @CodigoBarras
                     WHERE IdProductoMarca = @IdProductoMarca`)
         res.json({ ok: true, mensaje: 'Artículo actualizado' })
     } catch (err) {
@@ -195,7 +200,7 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    const { IdCategoria, Codigo, NombreProducto, Descripcion } = req.body
+    const { IdCategoria, Codigo, NombreProducto, Descripcion} = req.body
     try {
         const pool   = await poolPromise
         const result = await pool.request()
@@ -203,7 +208,7 @@ router.post('/', async (req, res) => {
             .input('Codigo',         sql.VarChar(30),  Codigo)
             .input('NombreProducto', sql.VarChar(150), NombreProducto)
             .input('Descripcion',    sql.VarChar(250), Descripcion)
-            .execute('sp_InsertarProducto')
+            .execute('sp_InsertarProducto')  // <-- este SP necesita el parámetro nuevo
         res.json({ ok: true, datos: result.recordset[0] })
     } catch (err) {
         res.status(500).json({ error: err.message })

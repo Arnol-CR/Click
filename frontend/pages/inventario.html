@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clik — Inventario</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="layout">
+
+    <div id="sidebar-container"></div>
+
+    <main class="content">
+        <div class="content-header">
+            <h1>Inventario</h1>
+            <p>Stock actual de productos</p>
+        </div>
+
+        <!-- FILTROS -->
+        <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+            <input type="text" id="buscador-inv" placeholder="Buscar por producto, marca o código..."
+                oninput="filtrarInventario()"
+                style="padding:8px 12px; border:1px solid var(--border); border-radius:8px; font-size:13px; width:300px; outline:none;"/>
+            <button class="chip active" onclick="filtrarEstado('', this)" id="chip-todos">Todos</button>
+            <button class="chip" onclick="filtrarEstado('Sin stock', this)">Sin stock</button>
+            <button class="chip" onclick="filtrarEstado('Stock bajo', this)">Stock bajo</button>
+            <button class="chip" onclick="filtrarEstado('Por vencer', this)">Por vencer</button>
+            <button class="chip" onclick="filtrarEstado('Vencido', this)">Vencido</button>
+            <button class="chip" onclick="filtrarEstado('OK', this)">OK</button>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Stock Actual</h3>
+                <span id="total-registros" style="font-size:13px; color:#888;"></span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Producto</th>
+                        <th>Marca</th>
+                        <th>Código</th>
+                        <th>Categoría</th>
+                        <th>Tamaño</th>
+                        <th>Stock</th>
+                        <th>Mín.</th>
+                        <th>P. Compra</th>
+                        <th>P. Venta</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-inventario">
+                    <tr><td colspan="11" class="text-center">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<script src="/js/sidebar.js"></script>
+<script src="/js/inventario.js"></script>
+</body>
+</html>

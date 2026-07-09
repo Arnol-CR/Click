@@ -71,7 +71,7 @@
                 </div>
                 <table>
                     <thead>
-                        <tr><th>Código</th><th>Nombre</th><th>Categoría</th><th>Estado</th></tr>
+                        <tr><th>Código</th><th>Nombre</th><th>Categoría</th><th>Estado</th><th>Acciones</th></tr>
                     </thead>
                     <tbody id="tabla-productos">
                         <tr><td colspan="4" class="text-center">Cargando...</td></tr>
@@ -180,9 +180,9 @@
                 <input type="text" id="inp-prod-nombre" placeholder="Ej: Aceite de Motor"/>
             </div>
             <div class="form-group">
-                <label>Descripción</label>
-                <input type="text" id="inp-prod-descripcion" placeholder="Opcional"/>
-            </div>
+    <label>Descripción</label>
+    <input type="text" id="inp-prod-descripcion" placeholder="Opcional"/>
+</div>
         </div>
         <div class="modal-footer">
             <button class="btn-cancel" onclick="cerrarModal('modal-producto')">Cancelar</button>
@@ -207,6 +207,10 @@
                 <label>Marca</label>
                 <select id="inp-var-marca"></select>
             </div>
+            <div class="form-group">
+    <label>Código de Barras</label>
+    <input type="text" id="inp-var-codigobarras" placeholder="Ej: 7401000810057"/>
+</div>
             <div class="form-group">
                 <label>Proveedor</label>
                 <select id="inp-var-proveedor"></select>
@@ -351,14 +355,16 @@
                 <input type="text" id="edit-prod-descripcion"/>
             </div>
             <div class="form-group">
-    <label>Estado</label>
-    <div class="toggle-container">
-        <label class="toggle">
-            <input type="checkbox" id="edit-prod-activo"/>
-            <span class="toggle-slider"></span>
-        </label>
-        <span class="toggle-label" id="edit-prod-activo-label">Activo</span>
-    </div>
+            <label>Estado</label>
+            <div class="toggle-container">
+                <label class="toggle">
+                    <input type="checkbox" id="edit-prod-activo"/>
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label" id="edit-prod-activo-label">Activo</span>
+           
+</div>
+
 </div>
         </div>
         <div class="modal-footer">
@@ -389,6 +395,10 @@
                 <label>Proveedor</label>
                 <select id="edit-art-proveedor"></select>
             </div>
+            <div class="form-group">
+    <label>Código de Barras</label>
+    <input type="text" id="edit-art-codigobarras" placeholder="Ej: 7401000810057"/>
+</div>
             <div class="form-group">
                 <label>Característica 1</label>
                 <input type="text" id="edit-art-car1"/>
